@@ -1,0 +1,98 @@
+div[b-b6gy2omwji]{position:relative}nav[b-b6gy2omwji]{top:4em;width:30em;display:inline-flex;flex-direction:row;margin-left:10px}nav span[b-b6gy2omwji]{width:4em;text-align:center;cursor:pointer;font-size:1em}div.board[b-b6gy2omwji]{margin-top:1em;flex-wrap:wrap;width:30em;height:24em;overflow:hidden;display:inline-flex;flex-direction:row;flex-wrap:wrap;z-index:-5;row-gap:0;pointer-events:none;border-left:10px solid var(--board-bg)}span.container[b-b6gy2omwji]{width:4em;height:4em;margin:0;padding:4px;overflow:hidden;background-color:transparent;position:relative;z-index:-2;pointer-events:none}.container span[b-b6gy2omwji]{width:3.5em;height:3.5em;border-radius:50%;box-shadow:0 0 0 3em var(--board-bg);left:0;position:absolute;display:block;z-index:5;pointer-events:none}.player1[b-b6gy2omwji],.player2[b-b6gy2omwji]{width:3.5em;height:3.5em;border-radius:50%;left:0;top:0;position:absolute;display:block;z-index:-8}.player1[b-b6gy2omwji]{background-color:var(--player1);animation-timing-function:cubic-bezier(.5,.05,1,.5);animation-iteration-count:1;animation-fill-mode:forwards;box-shadow:0 0 0 4px var(--player1)}.player2[b-b6gy2omwji]{background-color:var(--player2);animation-timing-function:cubic-bezier(.5,.05,1,.5);animation-iteration-count:1;animation-fill-mode:forwards;box-shadow:0 0 0 4px var(--player2)}.col0[b-b6gy2omwji]{left:calc(0em + 9px)}.col1[b-b6gy2omwji]{left:calc(4em + 9px)}.col2[b-b6gy2omwji]{left:calc(8em + 9px)}.col3[b-b6gy2omwji]{left:calc(12em + 9px)}.col4[b-b6gy2omwji]{left:calc(16em + 9px)}.col5[b-b6gy2omwji]{left:calc(20em + 9px)}.col6[b-b6gy2omwji]{left:calc(24em + 9px)}.drop1[b-b6gy2omwji]{animation-duration:1s;animation-name:drop1-b-b6gy2omwji}.drop2[b-b6gy2omwji]{animation-duration:1.5s;animation-name:drop2-b-b6gy2omwji}.drop3[b-b6gy2omwji]{animation-duration:1.6s;animation-name:drop3-b-b6gy2omwji}.drop4[b-b6gy2omwji]{animation-duration:1.7s;animation-name:drop4-b-b6gy2omwji}.drop5[b-b6gy2omwji]{animation-duration:1.8s;animation-name:drop5-b-b6gy2omwji}.drop6[b-b6gy2omwji]{animation-duration:1.9s;animation-name:drop6-b-b6gy2omwji}@keyframes drop1-b-b6gy2omwji{100%,75%,90%,97%{transform:translateY(1.27em)}80%{transform:translateY(.4em)}95%{transform:translateY(.8em)}99%{transform:translateY(1em)}}@keyframes drop2-b-b6gy2omwji{100%,75%,90%,97%{transform:translateY(5.27em)}80%{transform:translateY(3.8em)}95%{transform:translateY(4.6em)}99%{transform:translateY(4.9em)}}@keyframes drop3-b-b6gy2omwji{100%,75%,90%,97%{transform:translateY(9.27em)}80%{transform:translateY(7.2em)}95%{transform:translateY(8.3em)}99%{transform:translateY(8.8em)}}@keyframes drop4-b-b6gy2omwji{100%,75%,90%,97%{transform:translateY(13.27em)}80%{transform:translateY(10.6em)}95%{transform:translateY(12em)}99%{transform:translateY(12.7em)}}@keyframes drop5-b-b6gy2omwji{100%,75%,90%,97%{transform:translateY(17.27em)}80%{transform:translateY(14em)}95%{transform:translateY(15.7em)}99%{transform:translateY(16.5em)}}@keyframes drop6-b-b6gy2omwji{100%,75%,90%,97%{transform:translateY(21.27em)}80%{transform:translateY(17.4em)}95%{transform:translateY(19.4em)}99%{transform:translateY(20.4em)}}
+
+.connect-four[b-b6gy2omwji] {
+    max-width: 100%;
+    overflow-x: auto;
+}
+
+.drop-controls[b-b6gy2omwji] {
+    top: 0;
+    gap: 0;
+}
+
+.drop-controls button[b-b6gy2omwji] {
+    width: 4em;
+    border: 0;
+    background: transparent;
+    color: #333;
+    cursor: pointer;
+    font-size: 1.25em;
+}
+
+.drop-controls button:disabled[b-b6gy2omwji] {
+    cursor: not-allowed;
+    opacity: 0.5;
+}
+
+.game-status[b-b6gy2omwji] {
+    min-height: 2.5rem;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.board-area[b-b6gy2omwji] {
+    position: relative;
+    width: 30em;
+    height: 25em;
+}
+
+.scoreboard[b-b6gy2omwji] {
+    width: 30em;
+    max-width: 100%;
+    margin-top: 1.5rem;
+    padding: 1rem;
+    border: 1px solid #d6d5d5;
+    border-radius: 0.5rem;
+}
+
+.scoreboard h2[b-b6gy2omwji] {
+    margin-bottom: 0.75rem;
+    font-size: 1.25rem;
+}
+
+.score-row[b-b6gy2omwji] {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    min-height: 2.5rem;
+    border-top: 1px solid #eee;
+}
+
+.score-player[b-b6gy2omwji] {
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
+    width: 12rem;
+}
+
+.score-name[b-b6gy2omwji] {
+    font-weight: 600;
+}
+
+.tally-marks[b-b6gy2omwji] {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+}
+
+.tally-group[b-b6gy2omwji] {
+    width: 2.6rem;
+    height: 2rem;
+    fill: none;
+    stroke-width: 2.5;
+    stroke-linecap: round;
+}
+
+.player1-tally[b-b6gy2omwji] {
+    stroke: var(--player1);
+}
+
+.player2-tally[b-b6gy2omwji] {
+    stroke: var(--player2);
+}
+
+.tie-count[b-b6gy2omwji] {
+    margin: 0.5rem 0 0;
+    color: #555;
+}

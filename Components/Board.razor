@@ -1,0 +1,140 @@
+@inject GameState State
+
+<section class="connect-four" style="@ColorVariables">
+    <nav class="drop-controls" aria-label="Drop a piece">
+        @for (var column = 0; column < 7; column++)
+        {
+            var selectedColumn = column;
+            <button type="button"
+                    title="Drop a piece in this column"
+                    aria-label="@($"Drop a piece in column {column + 1}")"
+                    disabled="@(State.RoundWinner != GameState.WinState.No_Winner)"
+                    @onclick="() => PlayPiece(selectedColumn)">▼</button>
+        }
+    </nav>
+
+    <article class="game-status" aria-live="polite">
+        @if (State.RoundWinner != GameState.WinState.No_Winner)
+        {
+            <strong>@WinnerMessage</strong>
+            <button type="button" class="btn btn-primary" @onclick="ResetGame">Start next round</button>
+        }
+        else
+        {
+            <span>@CurrentTurn</span>
+        }
+        @if (!string.IsNullOrEmpty(errorMessage))
+        {
+            <span class="alert-danger" role="alert">@errorMessage</span>
+        }
+    </article>
+
+    <div class="board-area">
+        <div class="board" aria-label="Connect Four board">
+            @for (var i = 0; i < 42; i++)
+            {
+                <span class="container">
+                    <span></span>
+                </span>
+            }
+        </div>
+        @for (var i = 0; i < 42; i++)
+        {
+            var player = State.TheBoard[i];
+            var pieceClass = player == 0 ? string.Empty : $"player{player} col{i % 7} drop{i / 7 + 1}";
+            <span class="@pieceClass"></span>
+        }
+    </div>
+
+    <section class="scoreboard" aria-labelledby="scoreboard-heading">
+        <h2 id="scoreboard-heading">Match scoreboard</h2>
+        <div class="score-row">
+            <div class="score-player">
+                <span class="score-name">@State.Player1Name</span>
+                <span>@State.Player1Wins @(State.Player1Wins == 1 ? "win" : "wins")</span>
+            </div>
+            <div class="tally-marks" aria-label="@($"{State.Player1Wins} wins")">
+                @for (var group = 0; group < (State.Player1Wins + 4) / 5; group++)
+                {
+                    var marksInGroup = Math.Min(4, State.Player1Wins - group * 5);
+                    var hasFifthMark = State.Player1Wins >= (group + 1) * 5;
+                    <svg class="tally-group player1-tally" viewBox="0 0 52 38" aria-hidden="true">
+                        @for (var mark = 0; mark < marksInGroup; mark++)
+                        {
+                            var x = 8 + mark * 9;
+                            <line x1="@x" y1="6" x2="@x" y2="32" />
+                        }
+                        @if (hasFifthMark)
+                        {
+                            <line x1="5" y1="30" x2="44" y2="8" />
+                        }
+                    </svg>
+                }
+            </div>
+        </div>
+        <div class="score-row">
+            <div class="score-player">
+                <span class="score-name">@State.Player2Name</span>
+                <span>@State.Player2Wins @(State.Player2Wins == 1 ? "win" : "wins")</span>
+            </div>
+            <div class="tally-marks" aria-label="@($"{State.Player2Wins} wins")">
+                @for (var group = 0; group < (State.Player2Wins + 4) / 5; group++)
+                {
+                    var marksInGroup = Math.Min(4, State.Player2Wins - group * 5);
+                    var hasFifthMark = State.Player2Wins >= (group + 1) * 5;
+                    <svg class="tally-group player2-tally" viewBox="0 0 52 38" aria-hidden="true">
+                        @for (var mark = 0; mark < marksInGroup; mark++)
+                        {
+                            var x = 8 + mark * 9;
+                            <line x1="@x" y1="6" x2="@x" y2="32" />
+                        }
+                        @if (hasFifthMark)
+                        {
+                            <line x1="5" y1="30" x2="44" y2="8" />
+                        }
+                    </svg>
+                }
+            </div>
+        </div>
+        @if (State.Ties > 0)
+        {
+            <p class="tie-count">@State.Ties @(State.Ties == 1 ? "tie" : "ties")</p>
+        }
+    </section>
+</section>
+
+@code {
+    private string errorMessage = string.Empty;
+
+    private string ColorVariables =>
+        $"--board-bg: {State.BoardColor}; --player1: {State.Player1Color}; --player2: {State.Player2Color};";
+
+    private string CurrentTurn => $"{(State.PlayerTurn == 1 ? State.Player1Name : State.Player2Name)}'s turn";
+
+    private string WinnerMessage => State.RoundWinner switch
+    {
+        GameState.WinState.Player1_Wins => $"{State.Player1Name} wins this round!",
+        GameState.WinState.Player2_Wins => $"{State.Player2Name} wins this round!",
+        GameState.WinState.Tie => "This round is a tie!",
+        _ => string.Empty
+    };
+
+    private void PlayPiece(int column)
+    {
+        errorMessage = string.Empty;
+        try
+        {
+            State.PlayPiece(column);
+        }
+        catch (ArgumentException ex)
+        {
+            errorMessage = ex.Message;
+        }
+    }
+
+    private void ResetGame()
+    {
+        State.ResetBoard();
+        errorMessage = string.Empty;
+    }
+}

@@ -1,0 +1,13 @@
+.settings-swatch[b-c30maikpt1] {
+    display: inline-block;
+    width: 1rem;
+    height: 1rem;
+    margin-right: 0.4rem;
+    border: 1px solid #777;
+    border-radius: 50%;
+    vertical-align: -0.15rem;
+}
+
+.board-swatch[b-c30maikpt1] {
+    border-radius: 0.2rem;
+}

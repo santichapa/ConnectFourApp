@@ -1,0 +1,139 @@
+@page "/settings"
+@using System.ComponentModel.DataAnnotations
+@inject GameState State
+
+<PageTitle>Game settings</PageTitle>
+
+<h1>Game settings</h1>
+<p>Changes apply automatically as you edit valid values. Return to the game to see them on the board.</p>
+
+<EditForm EditContext="editContext" OnValidSubmit="SaveSettings">
+    <DataAnnotationsValidator />
+    <ValidationSummary />
+
+    <div class="mb-3">
+        <label class="form-label" for="player1-name">Player 1 name</label>
+        <input id="player1-name" class="form-control" maxlength="24"
+               @bind="settings.Player1Name" @bind:event="onchange" @bind:after="Player1NameChanged" />
+        <ValidationMessage For="() => settings.Player1Name" />
+    </div>
+    <div class="mb-3">
+        <label class="form-label" for="player1-color">Player 1 piece color</label>
+        <input id="player1-color" type="color" class="form-control form-control-color"
+               @bind="settings.Player1Color" @bind:event="onchange" @bind:after="Player1ColorChanged" />
+        <ValidationMessage For="() => settings.Player1Color" />
+    </div>
+    <div class="mb-3">
+        <label class="form-label" for="player2-name">Player 2 name</label>
+        <input id="player2-name" class="form-control" maxlength="24"
+               @bind="settings.Player2Name" @bind:event="onchange" @bind:after="Player2NameChanged" />
+        <ValidationMessage For="() => settings.Player2Name" />
+    </div>
+    <div class="mb-3">
+        <label class="form-label" for="player2-color">Player 2 piece color</label>
+        <input id="player2-color" type="color" class="form-control form-control-color"
+               @bind="settings.Player2Color" @bind:event="onchange" @bind:after="Player2ColorChanged" />
+        <ValidationMessage For="() => settings.Player2Color" />
+    </div>
+    <div class="mb-3">
+        <label class="form-label" for="board-color">Board color</label>
+        <input id="board-color" type="color" class="form-control form-control-color"
+               @bind="settings.BoardColor" @bind:event="onchange" @bind:after="BoardColorChanged" />
+        <ValidationMessage For="() => settings.BoardColor" />
+    </div>
+
+    <button type="submit" class="btn btn-primary">Save settings</button>
+    @if (saved)
+    {
+        <span class="ms-2" role="status">Settings applied.</span>
+    }
+
+</EditForm>
+
+<section class="mt-4 p-3 border rounded" aria-live="polite" aria-label="Settings preview">
+    <h2 class="h5">Live preview</h2>
+    <div class="d-flex flex-wrap gap-3 align-items-center">
+        <span><span class="settings-swatch" style="background-color: @settings.Player1Color"></span>@settings.Player1Name</span>
+        <span><span class="settings-swatch" style="background-color: @settings.Player2Color"></span>@settings.Player2Name</span>
+        <span><span class="settings-swatch board-swatch" style="background-color: @settings.BoardColor"></span>Board</span>
+    </div>
+</section>
+
+@code {
+    private SettingsModel settings = new();
+    private EditContext editContext = default!;
+    private bool saved;
+
+    protected override void OnInitialized()
+    {
+        settings = new SettingsModel
+        {
+            Player1Name = State.Player1Name,
+            Player2Name = State.Player2Name,
+            Player1Color = State.Player1Color,
+            Player2Color = State.Player2Color,
+            BoardColor = State.BoardColor
+        };
+        editContext = new EditContext(settings);
+    }
+
+    private void SaveSettings()
+    {
+        ApplySettings();
+    }
+
+    private void ApplySettingsIfValid()
+    {
+        var validationResults = new List<ValidationResult>();
+        var validationContext = new ValidationContext(settings);
+
+        if (Validator.TryValidateObject(settings, validationContext, validationResults, validateAllProperties: true))
+        {
+            ApplySettings();
+        }
+        else
+        {
+            saved = false;
+        }
+    }
+
+    private void Player1NameChanged() => SettingsFieldChanged(nameof(SettingsModel.Player1Name));
+    private void Player2NameChanged() => SettingsFieldChanged(nameof(SettingsModel.Player2Name));
+    private void Player1ColorChanged() => SettingsFieldChanged(nameof(SettingsModel.Player1Color));
+    private void Player2ColorChanged() => SettingsFieldChanged(nameof(SettingsModel.Player2Color));
+    private void BoardColorChanged() => SettingsFieldChanged(nameof(SettingsModel.BoardColor));
+
+    private void SettingsFieldChanged(string fieldName)
+    {
+        editContext.NotifyFieldChanged(new FieldIdentifier(settings, fieldName));
+        ApplySettingsIfValid();
+    }
+
+    private void ApplySettings()
+    {
+        State.Player1Name = settings.Player1Name.Trim();
+        State.Player2Name = settings.Player2Name.Trim();
+        State.Player1Color = settings.Player1Color;
+        State.Player2Color = settings.Player2Color;
+        State.BoardColor = settings.BoardColor;
+        saved = true;
+    }
+
+    private sealed class SettingsModel
+    {
+        [Required, StringLength(24)]
+        public string Player1Name { get; set; } = "Player 1";
+
+        [Required, StringLength(24)]
+        public string Player2Name { get; set; } = "Player 2";
+
+        [Required, RegularExpression("^#[0-9A-Fa-f]{6}$")]
+        public string Player1Color { get; set; } = "#9ACD32";
+
+        [Required, RegularExpression("^#[0-9A-Fa-f]{6}$")]
+        public string Player2Color { get; set; } = "#8A2BE2";
+
+        [Required, RegularExpression("^#[0-9A-Fa-f]{6}$")]
+        public string BoardColor { get; set; } = "#FF7F50";
+    }
+}

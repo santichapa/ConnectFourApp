@@ -1,0 +1,10 @@
+{
+  "version": 2,
+  "dgSpecHash": "fii86f7sXgI=",
+  "success": true,
+  "projectFilePath": "C:\\Users\\sanch\\OneDrive\\Desktop\\BYU - Idaho\\CSE325 - .NET Software Development\\cse325-week4\\ConnectFourApp\\ConnectFourApp.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\sanch\\.nuget\\packages\\microsoft.aspnetcore.app.internal.assets\\10.0.14\\microsoft.aspnetcore.app.internal.assets.10.0.14.nupkg.sha512"
+  ],
+  "logs": []
+}

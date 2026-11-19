@@ -1,0 +1,13 @@
+.settings-swatch {
+    display: inline-block;
+    width: 1rem;
+    height: 1rem;
+    margin-right: 0.4rem;
+    border: 1px solid #777;
+    border-radius: 50%;
+    vertical-align: -0.15rem;
+}
+
+.board-swatch {
+    border-radius: 0.2rem;
+}
